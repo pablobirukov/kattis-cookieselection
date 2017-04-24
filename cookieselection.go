@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"container/heap"
 	"fmt"
 	"io"
+	"os"
 	"strconv"
+	"strings"
 )
 
 type IntHeap []int
@@ -24,6 +27,7 @@ func (h *IntHeap) Pop() interface{} {
 	*h = old[0 : n-1]
 	return x
 }
+
 func rebalance(minH *IntHeap, maxH *IntHeap) {
 	if minH.Len() > maxH.Len()+1 {
 		heap.Push(maxH, -(*minH)[0])
@@ -35,23 +39,23 @@ func rebalance(minH *IntHeap, maxH *IntHeap) {
 }
 
 func main() {
+	stdIn := bufio.NewReader(os.Stdin)
 	minH := &IntHeap{}
 	heap.Init(minH)
 
 	maxH := &IntHeap{}
 	heap.Init(maxH)
 
-	var cmd string
 	for {
-		_, err := fmt.Scanf("%s", &cmd)
+		cmd, err := stdIn.ReadString('\n')
 		if err == io.EOF {
 			break
 		}
-		if cmd == "#" {
+		if cmd == "#\n" {
 			fmt.Printf("%d\n", heap.Pop(minH))
 			rebalance(minH, maxH)
 		} else {
-			cookie, _ := strconv.Atoi(cmd)
+			cookie, _ := strconv.Atoi(strings.TrimSpace(cmd))
 			if maxH.Len() > 0 && cookie <= -(*maxH)[0] {
 				heap.Push(maxH, -cookie)
 			} else {
