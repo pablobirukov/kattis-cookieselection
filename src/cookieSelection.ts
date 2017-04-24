@@ -6,8 +6,6 @@ export default function() {
 
     /**
      * Keeps invariance. Mutates passed arguments
-     * @param minHeap
-     * @param maxHeap
      */
     const rebalance = (minHeap: BinaryHeap<number>, maxHeap: BinaryHeap<number>) => {
         if (minHeap.size > maxHeap.size + 1) {
